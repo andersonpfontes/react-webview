@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 export default function App() {
+
+const INJECTED_JAVASCRIPT = `(function() {
+      window.ReactNativeWebView.postMessage(JSON.stringify(window.location));
+  })();`;
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <WebView
+        source={{ uri: 'https://megamonitor.pro/demo/admin' }}
+        injectedJavaScript={INJECTED_JAVASCRIPT}
+        onMessage={this.onMessage}
+        onLoadProgress={({ nativeEvent }) => {
+          this.loadingProgress = nativeEvent.progress;
+        }}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
